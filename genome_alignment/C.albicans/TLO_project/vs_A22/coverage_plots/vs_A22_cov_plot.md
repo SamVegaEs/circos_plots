@@ -21,10 +21,10 @@ for File in $(ls analysis/genome_alignment/minimap/*/vs_*/*_depth_10kb.tsv); do
 done
 ```
 ```bash
-OutDir=/projects/oldhome/groups/harrisonlab/project_files/Pichia/cov_chromosome_level/ONT
-ProgDir=/projects/oldhome/vegasa/git_repos/scripts/pichia/genome_alignment/Chromosome_level_assembly/cov_plot/ONT/vs_589
-circos -conf $ProgDir/vs_589_circos.conf -outputdir $OutDir
-mv $OutDir/circos.png $OutDir/vs_589_cov_unmasked_circos.png
-mv $OutDir/circos.svg $OutDir/vs_589_cov_unmasked_circos.svg
-ls $PWD/$OutDir/vs_589*_circos.png
+OutDir=/home/vegasa/circos/cov_plot/vs_A22/ONT
+ProgDir=/home/vegasa/git_repos/scripts/circos_plots/genome_alignment/C.albicans/TLO_project/vs_A22/coverage_plots
+circos -conf $ProgDir/vs_A22_circos.conf -outputdir $OutDir
+mv $OutDir/circos.png $OutDir/vs_A22_cov_unmasked_circos.png
+mv $OutDir/circos.svg $OutDir/vs_A22_cov_unmasked_circos.svg
+ls $PWD/$OutDir/vs_A22*_circos.png
 ```
