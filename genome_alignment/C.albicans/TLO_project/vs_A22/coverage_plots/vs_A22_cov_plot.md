@@ -1,3 +1,5 @@
+SLIGHTLY MODIFIED AS THEY WERE RUN FROM EMR CLUSTER
+
 ```bash
  OutDir=analysis/genome_alignment/circos/cov_plot/vs_A22/ONT
   mkdir -p $OutDir
