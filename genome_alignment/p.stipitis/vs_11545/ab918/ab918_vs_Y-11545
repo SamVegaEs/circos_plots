@@ -1,0 +1,56 @@
+AB918 vs 11545:
+
+```bash
+OutDir=analysis/genome_alignment/circos/vs_Y-11545_v2_circos/ab918
+  mkdir -p $OutDir
+```
+```bash
+QueryGenome=$(ls niab_assemblies/pichia/918/*.fasta)
+ProgDir=~/git_repos/tools/seq_tools/circos
+python $ProgDir/fasta2circos.py --genome $QueryGenome --contig_prefix "918_" > $OutDir/query_genome.txt
+
+Ref_genome=$(ls assembly/misc_publications/p.stipitis/Y-11545_v2/pichia.fasta)
+ProgDir=~/git_repos/tools/seq_tools/circos
+python $ProgDir/fasta2circos.py --genome $Ref_genome --contig_prefix "Y-11545_v2_" > $OutDir/ref_genome.txt
+
+cat $OutDir/query_genome.txt > $OutDir/query_ref_genome.txt
+tac $OutDir/ref_genome.txt >> $OutDir/query_ref_genome.txt
+```
+```bash
+OutDir=analysis/genome_alignment/circos/vs_Y-11545_v2_circos/ab918
+Coords=$(ls analysis/genome_alignment/mummer/pichia/918/*/*_coords.tsv)
+ProgDir=git_repos/scripts/alternaria/pathogen/genome_alignment
+$ProgDir/nucmer_coords2circos.py --inp_coords $Coords --queery_id 918 --ref_id Y-11545_v2 > $OutDir/query_vs_ref_links.txt
+cat $OutDir/query_vs_ref_links.txt > $OutDir/query_vs_ref_links_edited.txt
+```
+A file showing contig orientations was made:
+
+```bash
+cat $OutDir/query_ref_genome.txt | cut -f3 -d ' ' | sed "s/$/; /g" | tr -d '\n' > $OutDir/query_contig_order.txt
+ProgDir=git_repos/tools/seq_tools/circos
+$ProgDir/find_contig_orientation.py --links_file $OutDir/query_vs_ref_links_edited.txt > $OutDir/query_vs_ref_contig_orientation.txt
+```
+Contig order was selected by taking the first line of that file and then also taking the reversed order of contigs using the command:
+
+```bash
+cat $OutDir/query_vs_ref_contig_orientation.txt | grep -A1 'Order of all seen contigs' | tail -n1 | sed "s/, /\n/g" > tmp.txt
+cat $OutDir/query_ref_genome.txt | grep 'Y-11545_v2' | grep -w -v -f tmp.txt | cut -f3 -d ' '| tr -d '\n' | sed 's/Y-11545_v2/, Y-11545_v2/g'
+# cat $OutDir/Ag_As_genome.txt | grep 'Ag' | cut -f3 -d ' ' | tr -d '\n' | sed 's/Ag/, Ag/g' >> tmp.txt
+
+echo "Order of unseen Y-11545_v2 contigs and remaining ab918 contigs"
+cat $OutDir/query_ref_genome.txt | grep -w -v -f tmp.txt | cut -f3 -d ' '| tr -d '\n' | sed 's/ab918/, ab918/g' | sed 's/Y-11545_v2/, Y-11545_v2/g'
+```
+```
+918_bctg00000008, Y-11545_v2_chr_8.1, Y-11545_v2_chr_7.1, Y-11545_v2_chr_6.1, Y-11545_v2_chr_5.1, Y-11545_v2_chr_4.1, Y-11545_v2_chr_3.1, Y-11545_v2_chr_2.1, Y-11545_v2_chr_1.2, Y-11545_v2_chr_1.1
+```
+
+To generate the plots from NIAB cluster:
+
+```bash
+OutDir=/home/vegasa/circos/vs_Y-11545_v2_circos/ab918
+ProgDir=~/git_repos/scripts/circos_plots/genome_alignment/p.stipitis/vs_11545/ab918
+circos -conf $ProgDir/ab918_vs_11545_circos.conf -outputdir $OutDir
+mv $OutDir/circos.png $OutDir/ab918_vs_Y-11545_circos.png
+mv $OutDir/circos.svg $OutDir/ab918_vs_Y-11545_circos.svg
+ls $PWD/$OutDir/589_vs_Y-11545_v2_circos.png
+```
