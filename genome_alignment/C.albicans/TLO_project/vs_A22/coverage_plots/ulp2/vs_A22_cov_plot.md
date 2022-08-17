@@ -1,4 +1,6 @@
-  ```
+Adapt for all the different combinations of plots againts the reference assembly.
+
+```
  OutDir=analysis/genome_alignment/circos/cov_plot/vs_A22/ONT/ulp2
   mkdir -p $OutDir
 ```
